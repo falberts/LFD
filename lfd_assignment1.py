@@ -10,6 +10,8 @@ from sklearn.metrics import accuracy_score
 from sklearn.metrics import precision_score
 from sklearn.metrics import recall_score
 from sklearn.metrics import f1_score
+from sklearn.metrics import classification_report
+
 
 # SPLIT 70/15/15
 # BOW / TF-IDF
@@ -84,3 +86,7 @@ if __name__ == "__main__":
     # TODO: comment this
     acc = accuracy_score(Y_test, Y_pred)
     print(f"Final accuracy: {acc}")
+
+    # PER CLASS
+    rep = classification_report(Y_test, Y_pred)
+    print(f"Per class: {rep}")
