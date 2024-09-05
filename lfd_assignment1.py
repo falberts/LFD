@@ -7,10 +7,8 @@ from sklearn.feature_extraction.text import CountVectorizer, TfidfVectorizer
 from sklearn.naive_bayes import MultinomialNB
 from sklearn.pipeline import Pipeline
 from sklearn.metrics import accuracy_score
-from sklearn.metrics import precision_score
-from sklearn.metrics import recall_score
-from sklearn.metrics import f1_score
 from sklearn.metrics import classification_report
+from sklearn.metrics import multilabel_confusion_matrix
 
 
 # SPLIT 70/15/15
@@ -89,4 +87,7 @@ if __name__ == "__main__":
 
     # PER CLASS
     rep = classification_report(Y_test, Y_pred)
-    print(f"Per class: {rep}")
+    cm = multilabel_confusion_matrix(Y_test, Y_pred,
+                                     labels=["pos", "neg"])
+    print(f"Per class:\n{rep}")
+    print(f"Confusion matrix:\n{cm}")
