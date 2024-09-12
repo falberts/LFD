@@ -10,6 +10,10 @@ from sklearn.metrics import accuracy_score
 from sklearn.metrics import classification_report
 from sklearn.metrics import confusion_matrix
 from sklearn.metrics import multilabel_confusion_matrix
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.svm import SVC, LinearSVC
 
 
 # SPLIT 70/15/15
@@ -29,6 +33,9 @@ def create_arg_parser():
                         help="Do sentiment analysis (2-class problem)")
     parser.add_argument("-tf", "--tfidf", action="store_true",
                         help="Use the TF-IDF vectorizer instead of CountVectorizer")
+    parser.add_argument("-a", "--algorithm", default="NB", type=str,
+                        choices=["NB", "DT","RF", "KNN", "SVC", "LSVC"],
+                        help="Algorithm to use (default MultinomialDB)")
     args = parser.parse_args()
     return args
 
@@ -87,10 +94,22 @@ if __name__ == "__main__":
         # Bag of Words vectorizer
         vec = CountVectorizer(preprocessor=identity, tokenizer=identity)
 
-    # Combine the vectorizer with a Naive Bayes classifier
-    # Of course you have to experiment with different classifiers
-    # You can all find them through the sklearn library
-    classifier = Pipeline([('vec', vec), ('cls', MultinomialNB())])
+    # Choose a classifier
+    if args.algorithm == "NB":
+        cls = MultinomialNB()
+    elif args.algorithm == "DT":
+        cls = DecisionTreeClassifier()
+    elif args.algorithm == "RF":
+        cls = RandomForestClassifier()
+    elif args.algorithm ==  "KNN":
+        cls = KNeighborsClassifier()
+    elif args.algorithm == "SVC":
+        cls = SVC()
+    elif args.algorithm == "LSVC":
+        cls = LinearSVC()
+
+    # Combine the vectorizer with the classifier
+    classifier = Pipeline([('vec', vec), ('cls', cls)])
 
     # TODO: comment this
     classifier.fit(X_train, Y_train)
