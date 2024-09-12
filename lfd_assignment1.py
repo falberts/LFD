@@ -8,6 +8,7 @@ from sklearn.naive_bayes import MultinomialNB
 from sklearn.pipeline import Pipeline
 from sklearn.metrics import accuracy_score
 from sklearn.metrics import classification_report
+from sklearn.metrics import confusion_matrix
 from sklearn.metrics import multilabel_confusion_matrix
 
 
@@ -54,6 +55,22 @@ def identity(inp):
     return inp
 
 
+def measures(Y_test, Y_pred):
+    '''TODO docstring'''
+    
+    # TODO: comment this
+    acc = accuracy_score(Y_test, Y_pred)
+    print(f"Final accuracy: {acc}")
+
+    # PER CLASS
+    rep = classification_report(Y_test, Y_pred)
+    cm = confusion_matrix(Y_test, Y_pred)
+    # mcm = multilabel_confusion_matrix(Y_test, Y_pred)
+
+    print(f"Per class:\n{rep}")
+    print(f"Confusion matrix:\n{cm}")
+
+
 if __name__ == "__main__":
     args = create_arg_parser()
 
@@ -85,9 +102,10 @@ if __name__ == "__main__":
     acc = accuracy_score(Y_test, Y_pred)
     print(f"Final accuracy: {acc}")
 
-    # PER CLASS
+    # Print classification report and confusion matrix
     rep = classification_report(Y_test, Y_pred)
-    cm = multilabel_confusion_matrix(Y_test, Y_pred,
-                                     labels=["pos", "neg"])
+    cm = confusion_matrix(Y_test, Y_pred)
+    # cm = multilabel_confusion_matrix(Y_test, Y_pred,)
+
     print(f"Per class:\n{rep}")
     print(f"Confusion matrix:\n{cm}")
